@@ -26,6 +26,8 @@ apt コマンドの基本的な使い方。
 
 ```
 export GOPATH=/home/kashiba/go
+PATH="$PATH:$GOPATH/bin"
+umask 022
 → ~/.bashrc にも設定
 
 # Goパッケージ取得
