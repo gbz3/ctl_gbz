@@ -21,3 +21,13 @@ apt コマンドの基本的な使い方。
 | apt-cache show パッケージ名 | パッケージの情報を表示 |
 | dpkg -l [パッケージ名] | インストールされているパッケージをリスト表示 |
 | dpkg -L パッケージ名 | パッケージでインストールされたファイルをリスト表示 |
+
+### Go設定
+
+```
+export GOPATH=/home/kashiba/go
+→ ~/.bashrc にも設定
+
+# Goパッケージ取得
+go get github.com/gbz3/ctl_gbz
+```
