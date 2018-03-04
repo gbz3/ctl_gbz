@@ -31,3 +31,11 @@ export GOPATH=/home/kashiba/go
 # Goパッケージ取得
 go get github.com/gbz3/ctl_gbz
 ```
+
+### Git設定
+
+```
+git config --global user.name "First-name Family-name"
+git config --global user.email username@example.com
+git config --global core.editor 'vim -c "set fenc=utf-8"'
+```
