@@ -32,6 +32,7 @@ umask 022
 
 # Goパッケージ取得
 go get github.com/gbz3/ctl_gbz
+go get golang.org/x/crypto/ssh
 ```
 
 ### Git設定
