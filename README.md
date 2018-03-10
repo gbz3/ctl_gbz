@@ -42,3 +42,23 @@ git config --global user.name "First-name Family-name"
 git config --global user.email username@example.com
 git config --global core.editor 'vim -c "set fenc=utf-8"'
 ```
+
+## ssh関連情報取得
+
+```
+## サーバに接続して公開鍵を表示  ※複数の鍵を利用可能であれば、鍵の種類分出力
+$ ssh-keyscan -p <ポート番号> <IPアドレス>
+# IPアドレス:ポート番号 SSH/OpenSSHのバージョン
+[IPアドレス]:ポート番号 ssh-rsa 公開鍵
+# IPアドレス:ポート番号 SSH/OpenSSHのバージョン
+[IPアドレス]:ポート番号 ecdsa-sha2-nistp256 公開鍵
+...
+
+## known_hosts から指定サーバの公開鍵情報を表示
+$ ssh-keygen -F [IPアドレス]:ポート番号
+# Host  [IPアドレス]:ポート番号 found: line 1
+|1|ホスト情報のハッシュ値？ ecdsa-sha2-nistp256 公開鍵
+
+## known_hosts から指定サーバの公開鍵情報を削除
+$ ssh-keygen -R [IPアドレス]:ポート番号
+```
