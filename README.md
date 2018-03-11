@@ -1,5 +1,22 @@
 # ctl_gbz
 
+## 呼び出し側main
+
+```
+package main                                              
+                                                          
+import (                                                  
+  "fmt"                                                   
+  "os"                                                    
+                                                          
+  "github.com/gbz3/ctl_gbz"                               
+)                                                         
+                                                          
+func main() {                                             
+  fmt.Fprint( os.Stdout, ctl_gbz.Main( os.Args[1:] ) )    
+}                                                         
+```
+
 ## WSLの設定
 
 ### bashの設定
