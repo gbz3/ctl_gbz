@@ -1,26 +1,28 @@
-package ctl_gbz
+package ctl_gbz_cmdctl
 
 import (
   "fmt"
+
+  base "github.com/gbz3/ctl_gbz"
 )
 
 func init() {
-  cmdAll = append( cmdAll, "cmdinfo" )
+  base.RegistCmd( "cmdctl", newCmdctl )
 }
 
 // コマンドの情報を表示
-type cmdinfoCmd struct {
+type cmdctlCmd struct {
   name string
   args []string
 }
 
 // コンストラクタ
-func newCmdinfo( args []string ) ( cmd *cmdinfoCmd ) {
-  return &cmdinfoCmd{ args[0], args[1:] }
+func newCmdctl( args []string ) ( cmd base.SyncCmd ) {
+  return &cmdctlCmd{ args[0], args[1:] }
 }
 
 // 引数をチェック
-func ( self cmdinfoCmd ) CheckArgs( args []string ) ( err error ) {
+func ( self cmdctlCmd ) CheckArgs( args []string ) ( err error ) {
   if args == nil || len( args ) != 5 {
     return fmt.Errorf( "illegal signature. %v", args )
   }
@@ -41,7 +43,7 @@ func ( self cmdinfoCmd ) CheckArgs( args []string ) ( err error ) {
 }
 
 // コマンドを実行
-func ( self cmdinfoCmd ) Execute() ( r string, err error ) {
-  return "# Header #\ncmdinfo: 9999\n", nil;
+func ( self cmdctlCmd ) Execute() ( r string, err error ) {
+  return "# Header #\ncmdctl: 9999\n", nil;
 }
 
