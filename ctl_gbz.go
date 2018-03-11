@@ -10,17 +10,17 @@ const (
 )
 
 // コマンド名称とコンストラクタ
-type CmdRegister struct {
+type cmdRegister struct {
   name string
   loader func( []string ) SyncCmd
 }
 
-var CmdAll []CmdRegister
+var cmdAll []cmdRegister
 
 // 各コマンドのコンストラクタを登録する
 // 各コマンドの具象クラスの init() で登録する
 func RegistCmd( name string, loader func( []string ) SyncCmd ) {
-  CmdAll = append( CmdAll, CmdRegister{ name, loader } )
+  cmdAll = append( cmdAll, cmdRegister{ name, loader } )
 }
 
 func Main( args []string ) string {
@@ -33,12 +33,12 @@ func Main( args []string ) string {
     panic( err )
   }
 
-  var result string
-  if result, err = cmd.Execute(); err != nil {
+  var output string
+  if output, err = cmd.Execute(); err != nil {
     panic( err )
   }
 
-  return fmt.Sprintf( "%s\n%s %s\n", result, time.Now().Format( "2006/01/02 15:04:05" ), ctl_name )
+  return fmt.Sprintf( "%s\n%s %s\n", output, time.Now().Format( "2006/01/02 15:04:05" ), ctl_name )
 }
 
 // コマンドのインタフェース宣言
@@ -53,7 +53,7 @@ func dispatchCmd( args []string ) ( cmd SyncCmd, err error ) {
     return nil, fmt.Errorf( "too few arguments." )
   }
 
-  for _, c := range CmdAll {
+  for _, c := range cmdAll {
     if c.name == args[0] {
       return c.loader( args ), nil
     }
