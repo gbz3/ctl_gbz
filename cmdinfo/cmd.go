@@ -1,3 +1,8 @@
+/*
+  cmdinfo
+  のコメント
+  です。
+*/
 package cmdinfo
 
 import (
@@ -7,7 +12,7 @@ import (
 )
 
 func init() {
-  base.RegistCmd( "cmdinfo", newCmdinfo )
+  base.RegistCmd( "cmdinfo", newCmd )
 }
 
 // コマンドの情報を表示
@@ -17,7 +22,7 @@ type cmdinfoCmd struct {
 }
 
 // コンストラクタ
-func newCmdinfo( args []string ) ( cmd base.SyncCmd ) {
+func newCmd( args []string ) ( cmd base.SyncCmd ) {
   return &cmdinfoCmd{ args[0], args[1:] }
 }
 

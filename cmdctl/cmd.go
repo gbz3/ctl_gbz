@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-  base.RegistCmd( "cmdctl", newCmdctl )
+  base.RegistCmd( "cmdctl", newCmd )
 }
 
 // コマンドの情報を表示
@@ -17,7 +17,7 @@ type cmdctlCmd struct {
 }
 
 // コンストラクタ
-func newCmdctl( args []string ) ( cmd base.SyncCmd ) {
+func newCmd( args []string ) ( cmd base.SyncCmd ) {
   return &cmdctlCmd{ args[0], args[1:] }
 }
 
