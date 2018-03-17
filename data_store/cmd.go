@@ -57,8 +57,12 @@ func ClearCmd( id int64 ) {
   defer tx.Rollback()
 
   // SQL準備
-  _, err = db.Exec( `DELETE FROM CMD WHERE ID=?`, id )
+  stmt, err := tx.Prepare( `DELETE FROM CMD WHERE ID=?` )
   if err != nil { return }
+  defer stmt.Close()
+
+  // レコード削除
+  _, err = stmt.Exec( id )
 
   tx.Commit()
 }
