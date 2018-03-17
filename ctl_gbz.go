@@ -38,7 +38,11 @@ func Main( args []string, stdout io.Writer, stderr io.Writer ) int {
     return 1;
   }
 
-  id := ds.StoreCmd( ctl_name )
+  var id int64
+  if id, err = ds.StoreCmd( cmd.Name(), cmd.Name() ); err != nil {
+    fmt.Fprintf( stdout, "%s %s %s\n", time.Now().Format( "2006/01/02 15:04:05" ), ctl_name, err )
+    return 1;
+  }
   defer ds.ClearCmd( id )
 
   var output string
@@ -53,6 +57,7 @@ func Main( args []string, stdout io.Writer, stderr io.Writer ) int {
 
 // コマンドのインタフェース宣言
 type SyncCmd interface {
+  Name() string
   CheckArgs( []string ) error
   Execute() ( string, error )
 }

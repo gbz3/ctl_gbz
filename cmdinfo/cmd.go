@@ -26,6 +26,11 @@ func newCmd( args []string ) ( cmd base.SyncCmd ) {
   return &cmdinfoCmd{ args[0], args[1:] }
 }
 
+// コマンド名
+func ( self cmdinfoCmd ) Name() string {
+  return self.name
+}
+
 // 引数をチェック
 func ( self cmdinfoCmd ) CheckArgs( args []string ) ( err error ) {
   if args == nil || len( args ) != 5 {
