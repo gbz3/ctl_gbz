@@ -2,6 +2,7 @@ package ctl_gbz
 
 import (
   "fmt"
+  "io"
   "time"
 )
 
@@ -23,22 +24,26 @@ func RegistCmd( name string, loader func( []string ) SyncCmd ) {
   cmdAll = append( cmdAll, cmdRegister{ name, loader } )
 }
 
-func Main( args []string ) string {
+func Main( args []string, stdout io.Writer, stderr io.Writer ) int {
   cmd, err := dispatchCmd( args )
   if err != nil {
-    panic( err )
+    fmt.Fprintf( stdout, "%s %s %s\n", time.Now().Format( "2006/01/02 15:04:05" ), ctl_name, err )
+    return 1;
   }
 
   if err = cmd.CheckArgs( args ); err != nil {
-    panic( err )
+    fmt.Fprintf( stdout, "%s %s %s\n", time.Now().Format( "2006/01/02 15:04:05" ), ctl_name, err )
+    return 1;
   }
 
   var output string
   if output, err = cmd.Execute(); err != nil {
-    panic( err )
+    fmt.Fprintf( stdout, "%s %s %s\n", time.Now().Format( "2006/01/02 15:04:05" ), ctl_name, err )
+    return 1;
   }
 
-  return fmt.Sprintf( "%s\n%s %s\n", output, time.Now().Format( "2006/01/02 15:04:05" ), ctl_name )
+  fmt.Fprintf( stdout, "%s\n%s %s\n", output, time.Now().Format( "2006/01/02 15:04:05" ), ctl_name )
+  return 0;
 }
 
 // コマンドのインタフェース宣言
