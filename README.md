@@ -3,18 +3,17 @@
 ## 呼び出し側main
 
 ```
-package main                                              
-                                                          
-import (                                                  
-  "fmt"                                                   
-  "os"                                                    
-                                                          
-  "github.com/gbz3/ctl_gbz"                               
-)                                                         
-                                                          
-func main() {                                             
-  fmt.Fprint( os.Stdout, ctl_gbz.Main( os.Args[1:] ) )    
-}                                                         
+package main
+
+import (
+  "os"
+
+  "github.com/gbz3/ctl_gbz"
+)
+
+func main() {
+  os.Exit( ctl_gbz.Main( os.Args[1:], os.Stdout, os.Stderr ) )
+}
 ```
 
 ## WSLの設定
