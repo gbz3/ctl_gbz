@@ -4,6 +4,8 @@ import (
   "fmt"
   "io"
   "time"
+
+  ds "github.com/gbz3/ctl_gbz/data_store"
 )
 
 const (
@@ -35,6 +37,9 @@ func Main( args []string, stdout io.Writer, stderr io.Writer ) int {
     fmt.Fprintf( stdout, "%s %s %s\n", time.Now().Format( "2006/01/02 15:04:05" ), ctl_name, err )
     return 1;
   }
+
+  id := ds.StoreCmd( ctl_name )
+  defer ds.ClearCmd( id )
 
   var output string
   if output, err = cmd.Execute(); err != nil {
