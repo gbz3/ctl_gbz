@@ -50,22 +50,22 @@ fmt.Printf( "debug: ClearCmd( id=%d )\n", id )
 
   // DB接続
   db, err := sql.Open( "sqlite3", "./test.db" )
-  if err != nil { return }
+  if err != nil { panic( err ) }
   defer db.Close()
 
   // トランザクション開始
   tx, err := db.BeginTx( ctx, &sql.TxOptions{} )
-  if err != nil { return }
+  if err != nil { panic( err ) }
   defer tx.Rollback()
 
   // SQL準備
   stmt, err := tx.PrepareContext( ctx, `DELETE FROM CMD WHERE ID=?` )
-  if err != nil { return }
+  if err != nil { panic( err ) }
   defer stmt.Close()
 
   // レコード削除
   res, err := stmt.ExecContext( ctx, id )
-  if err != nil { return }
+  if err != nil { panic( err ) }
 
   i, _ := res.RowsAffected()
 fmt.Printf( "debug: Delete %d rows.\n", i )
