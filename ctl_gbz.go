@@ -1,6 +1,7 @@
 package ctl_gbz
 
 import (
+  "context"
   "fmt"
   "io"
   "time"
@@ -38,12 +39,13 @@ func Main( args []string, stdout io.Writer, stderr io.Writer ) int {
     return 1;
   }
 
+  ctx, _ := context.WithTimeout( context.Background(), 2*time.Second )
   var id int64
-  if id, err = ds.StoreCmd( cmd.Name(), cmd.Name() ); err != nil {
+  if id, err = ds.StoreCmd( ctx, cmd.Name(), cmd.Name() ); err != nil {
     fmt.Fprintf( stdout, "%s %s %s\n", time.Now().Format( "2006/01/02 15:04:05" ), ctl_name, err )
     return 1;
   }
-  defer ds.ClearCmd( id )
+  defer ds.ClearCmd( ctx, id )
 
   var output string
   if output, err = cmd.Execute(); err != nil {
