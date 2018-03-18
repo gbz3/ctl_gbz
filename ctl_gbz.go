@@ -6,7 +6,7 @@ import (
   "io"
   "time"
 
-  ds "github.com/gbz3/ctl_gbz/data_store"
+  ds "github.com/gbz3/ctl_gbz/dstore"
 )
 
 const (
