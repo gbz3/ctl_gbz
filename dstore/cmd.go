@@ -4,7 +4,6 @@ import (
   "context"
   "database/sql"
   "fmt"
-//  "time"
 
   _ "github.com/mattn/go-sqlite3"
 )
@@ -71,5 +70,67 @@ fmt.Printf( "debug: ClearCmd( id=%d )\n", id )
 fmt.Printf( "debug: Delete %d rows.\n", i )
 
   tx.Commit()
+}
+
+type Cmd struct {
+  Id int64
+  Name string
+  LockKey string
+}
+
+// コマンド情報取得
+func GetCmdOne( ctx context.Context, id int64 ) ( *Cmd, error ) {
+fmt.Printf( "debug: GetCmdOne( id=%d )\n", id )
+
+  // DB接続
+  db, err := sql.Open( "sqlite3", "./test.db" )
+  if err != nil { panic( err ) }
+  defer db.Close()
+
+  // トランザクション開始
+  tx, err := db.BeginTx( ctx, &sql.TxOptions{} )
+  if err != nil { panic( err ) }
+  defer tx.Rollback()
+
+  // 1件取得
+  r := &Cmd{}
+  if err = db.QueryRowContext( ctx, `SELECT ID, NAME, LOCK_KEY FROM CMD WHERE ID = ?`, id ).Scan( &r.Id, &r.Name, &r.LockKey ); err != nil {
+    return nil, err
+  }
+
+fmt.Printf( "debug: Id=%d Name=%s LockKey=%s\n", r.Id, r.Name, r.LockKey )
+  return r, nil
+}
+
+// コマンド情報取得
+func GetCmdAll( ctx context.Context, name string ) ( []Cmd, error ) {
+fmt.Printf( "debug: GetCmdAll( name=%s )\n", name )
+
+  // DB接続
+  db, err := sql.Open( "sqlite3", "./test.db" )
+  if err != nil { panic( err ) }
+  defer db.Close()
+
+  // トランザクション開始
+  tx, err := db.BeginTx( ctx, &sql.TxOptions{} )
+  if err != nil { panic( err ) }
+  defer tx.Rollback()
+
+  rows, err := db.Query( `SELECT ID, NAME, LOCK_KEY FROM CMD WHERE NAME = ?`, name )
+  if err != nil {
+    return nil, err
+  }
+  defer rows.Close()
+
+  var result []Cmd
+  for rows.Next() {
+    cmd := Cmd{}
+    if err = rows.Scan( &cmd.Id, &cmd.Name, &cmd.LockKey ); err != nil {
+      return nil, err
+    }
+    result = append( result, cmd )
+  }
+
+  return result, nil
 }
 

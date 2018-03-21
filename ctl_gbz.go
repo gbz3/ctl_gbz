@@ -49,7 +49,7 @@ func Main( args []string, stdout io.Writer, stderr io.Writer ) int {
   defer ds.ClearCmd( ctx, id )
 
   var output string
-  if output, err = cmd.Execute(); err != nil {
+  if output, err = cmd.Execute( ctx ); err != nil {
     fmt.Fprintf( stdout, "%s %s %s\n", time.Now().Format( "2006/01/02 15:04:05" ), ctl_name, err )
     return 1;
   }
@@ -62,7 +62,7 @@ func Main( args []string, stdout io.Writer, stderr io.Writer ) int {
 type SyncCmd interface {
   Name() string
   CheckArgs( []string ) error
-  Execute() ( string, error )
+  Execute( context.Context ) ( string, error )
 }
 
 // 第一引数のコマンド名から適切なコマンドオブジェクトを作成

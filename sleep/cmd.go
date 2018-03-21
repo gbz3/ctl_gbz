@@ -6,6 +6,7 @@
 package sleep
 
 import (
+  "context"
   "fmt"
   "strconv"
   "time"
@@ -55,7 +56,7 @@ func ( self sleepCmd ) CheckArgs( args []string ) ( err error ) {
 }
 
 // コマンドを実行
-func ( self sleepCmd ) Execute() ( r string, err error ) {
+func ( self sleepCmd ) Execute( ctx context.Context ) ( r string, err error ) {
   timeSecond, _ := strconv.Atoi( self.args[0] )
   time.Sleep( time.Duration( timeSecond ) * time.Second )
   output := fmt.Sprintf( "# Header #\n%s: %d\n", self.name, timeSecond )

@@ -1,6 +1,7 @@
 package ctl_gbz_cmdctl
 
 import (
+  "context"
   "fmt"
 
   base "github.com/gbz3/ctl_gbz"
@@ -48,7 +49,7 @@ func ( self cmdctlCmd ) CheckArgs( args []string ) ( err error ) {
 }
 
 // コマンドを実行
-func ( self cmdctlCmd ) Execute() ( r string, err error ) {
+func ( self cmdctlCmd ) Execute( ctx context.Context ) ( r string, err error ) {
   return "# Header #\ncmdctl: 9999\n", nil;
 }
 

@@ -6,9 +6,12 @@
 package cmdinfo
 
 import (
+  "context"
   "fmt"
+  "strconv"
 
   base "github.com/gbz3/ctl_gbz"
+  ds "github.com/gbz3/ctl_gbz/dstore"
 )
 
 func init() {
@@ -53,7 +56,30 @@ func ( self cmdinfoCmd ) CheckArgs( args []string ) ( err error ) {
 }
 
 // コマンドを実行
-func ( self cmdinfoCmd ) Execute() ( r string, err error ) {
-  return "# Header #\ncmdinfo: 9999\n", nil;
+func ( self cmdinfoCmd ) Execute( ctx context.Context ) ( r string, err error ) {
+fmt.Printf( "debug: args[1]=%s args[2]=%s\n", self.args[0], self.args[1] )
+
+  var output string
+  switch self.args[0] {
+    case "cmd":
+      rows, err := ds.GetCmdAll( ctx, self.args[1] )
+      if err != nil {
+        return "", err
+      }
+      for _, row := range rows {
+        output += fmt.Sprintf( "%s: %d\n", row.Name, row.Id )
+      }
+    case "id":
+      var result *ds.Cmd
+      i, _ := strconv.Atoi( self.args[1] )
+      if result, err = ds.GetCmdOne( ctx, int64( i ) ); err != nil {
+        return "", err
+      }
+      output = fmt.Sprintf( "%s: %d\n", result.Name, result.Id )
+    default:
+      return "", fmt.Errorf( "arg[1] must be [cmd] or [id]. [%s]", self.args[1] )
+  }
+  r = fmt.Sprintf( "# Header #\n%s", output )
+  return r, nil
 }
 
